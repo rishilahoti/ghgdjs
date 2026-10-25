@@ -1,6 +1,8 @@
 from datetime import date, timedelta
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.staticfiles import StaticFiles
 
 import core
 
@@ -23,3 +25,8 @@ def forecast(day: date, cutoff_hour: int = Query(core.CUTOFF_HOUR, ge=0, le=23))
 def accuracy(cutoff_hour: int = Query(core.CUTOFF_HOUR, ge=0, le=23)):
     """Overall, per-day and per-horizon error metrics for all January delivery days."""
     return {"cutoff_hour": cutoff_hour, **core.accuracy(JAN, ACT, FC, cutoff_hour)}
+
+# Docker image ships the built React app next to this file; mounted last so /api/* wins.
+STATIC = Path(__file__).parent / "static"
+if STATIC.is_dir():
+    app.mount("/", StaticFiles(directory=STATIC, html=True), name="static")
