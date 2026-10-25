@@ -20,7 +20,7 @@ Helps a day-ahead power buyer (a) see the **latest wind forecast available befor
 | `backend/test_api.py` | API checks (`python test_api.py`) |
 | `frontend/` | React + Vite + Recharts UI (`src/Forecast.jsx`, `src/Accuracy.jsx`) |
 | `Dockerfile` | Multi-stage build: React build → Python image serving API + UI on :8000 |
-| `api/index.py`, `vercel.json`, `requirements.txt` | Vercel deployment (static UI + Python function) |
+| `api/index.py`, `vercel.json`, `requirements.txt` | Vercel deployment (one Python function serving API + built UI) |
 | `docs/` | `research.md` (domain + API findings), `plan.md` (implementation plan) |
 | `decisions.md` | Log of every design decision and why |
 
@@ -37,9 +37,13 @@ cd frontend && npm install && npm run dev                     # http://localhost
 ```
 
 ## Deploy to Vercel
-1. Push this repo to GitHub.
-2. vercel.com → Add New → Project → import the repo. Leave Framework Preset as "Other"; `vercel.json` supplies build command, output dir and the Python function. No env vars needed.
-3. Deploy, then check `https://<app>.vercel.app/api/accuracy` returns JSON and the UI loads.
+Vercel detects the FastAPI app and runs it as one Python function. `vercel.json` builds the React app and copies it to `backend/static/`, which the same app serves (as in Docker). No env vars needed.
+```bash
+vercel deploy --prod
+```
+or import the GitHub repo in the Vercel dashboard (Framework Preset: Other).
+Check `/api/accuracy` returns JSON (`"n":744`) and `/` loads the UI.
+Note: new Vercel projects have **Deployment Protection** on; turn off "Vercel Authentication" in Project Settings > Deployment Protection to make the URL public.
 
 ## Known limits
 - January 2026 only; historical, not live.

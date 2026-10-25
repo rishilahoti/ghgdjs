@@ -1,5 +1,7 @@
-node_modules
-dist
-__pycache__
 
 .vercel
+.vercel
+__pycache__
+backend/static
+dist
+node_modules
