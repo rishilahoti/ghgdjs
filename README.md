@@ -21,8 +21,6 @@ Helps a day-ahead power buyer (a) see the **latest wind forecast available befor
 | `frontend/` | React + Vite + Recharts UI (`src/Forecast.jsx`, `src/Accuracy.jsx`) |
 | `Dockerfile` | Multi-stage build: React build → Python image serving API + UI on :8000 |
 | `api/index.py`, `vercel.json`, `requirements.txt` | Vercel deployment (one Python function serving API + built UI) |
-| `docs/` | `research.md` (domain + API findings), `plan.md` (implementation plan) |
-| `decisions.md` | Log of every design decision and why |
 
 ## Run
 **Docker** (needs Docker Desktop running):
